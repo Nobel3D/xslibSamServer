@@ -10,21 +10,24 @@
 class Rcon
 {
 private:
-    QString sAddress;
+    QString strAddress;
     int iPort;
-    int iState = 0;
+    QString strStatus;
+    bool bConnected;
     QTcpSocket socket;
 public:
     Rcon();
-    Rcon(QString _Address, int _Port);
-    int Connect(QString address, int port);
-    int Login(QString passwd);
+    Rcon(QString _address, int _port);
+    int Connect();
+    int Login(const QString &passwd);
+
     QString ReadStream();
-    int WriteStream(QString send);
+    int WriteStream(const QString &send);
     void Close();
 
     QString getAddress();
     QString getPort();
+    QString getStatus();
 
     bool isOnline();
 };

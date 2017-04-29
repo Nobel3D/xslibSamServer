@@ -8,10 +8,11 @@ Fetch::Fetch(Rcon* stream)
 
 void Fetch::run()
 {
+    QString buffer;
     while(cStream->isOnline())
     {
-         strData = cStream->ReadStream();
-         if(!strData.startsWith('>') && strData != "")
-             flag = 1;
+         buffer = cStream->ReadStream();
+         if(!buffer.startsWith('>') && buffer != "\r" && !buffer.isEmpty())
+             strData = buffer;
     }
 }

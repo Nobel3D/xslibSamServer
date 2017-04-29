@@ -6,38 +6,33 @@ Rcon::Rcon()
 {
 }
 
-Rcon::Rcon(QString _Address, int _Port)
+Rcon::Rcon(QString _address, int _port)
 {
-    Connect(_Address, _Port);
+    strAddress = _address;
+    iPort = _port;
 }
 
-int Rcon::Connect(QString address, int port)
+int Rcon::Connect()
 {
-    sAddress = address;
-    iPort = port;
-    LOG("[NET] Connecting to server socket...");
-    if (iState == 0)  //Disconnected
+    if (!bConnected)  //Disconnected
     {
-        socket.connectToHost(address, port);
+        socket.connectToHost(strAddress, iPort);
 
         if (!socket.waitForConnected(SEC_TIMEOUT))
         {
-            xsConsole() << "Impossible reach host!\n";
-            LOG("[NET] Connection timeout!");
-            iState = 2; //Timeout
-            return -1;
+            strStatus = "Impossible reach host!";
+            return FAIL;
         }
         LOG("[NET] Connected to server!");
-        iState = 1; //Connected
-        return 0;
+        bConnected = true; //Connected
+        return OK;
     }
-    LOG("[NET] Already connected!");
-    return -1;
+    strStatus = "Already connected!";
+    return FAIL;
 }
 
-int Rcon::Login(QString passwd)
+int Rcon::Login(const QString &passwd)
 {
-    LOG("[NET] Trying to login...");
     QString data;
     do
     {
@@ -51,12 +46,10 @@ int Rcon::Login(QString passwd)
     data = ReadStream();//ottengo il risultato della connessione:
     if (data == "login: \r")// se mi richiede il login: vuol dire che è sbagliata la password
     {
-        LOG("[NET] Login failed!");
-        xsConsole() << "\nWrong Password!\n";
-        return -1;
+        strStatus = "Wrong Password!";
+        return FAIL;
     }
-    LOG("[NET] Connection authenticated!");
-    return 0;
+    return OK;
 }
 
 QString Rcon::ReadStream()
@@ -73,25 +66,26 @@ QString Rcon::ReadStream()
     return strout;
 }
 
-int Rcon::WriteStream(QString send)
+int Rcon::WriteStream(const QString &send)
 {
-    send.append("\r");
-    socket.write( send.toUtf8() );
+    QString cpy = send;
+    cpy.append("\r");
+    socket.write( cpy.toUtf8() );
     socket.waitForBytesWritten();
-    return 0;
+    return OK;
 }
 
 void Rcon::Close()
 {
      LOG("[NET] Closing socket!");
-    iState = 0;
     socket.close();
 }
 
 bool Rcon::isOnline()
 {
-    return iState == 1;
+    return bConnected;
 }
 
-QString Rcon::getAddress() { return sAddress; }
+QString Rcon::getAddress() { return strAddress; }
 QString Rcon::getPort() { return QString::number(iPort); }
+QString Rcon::getStatus() { return strStatus; }
