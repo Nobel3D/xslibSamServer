@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += network
-
+QT       += sql
 QT       -= gui
 
 TARGET = xsSamServer
@@ -24,14 +24,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += xssamserver.cpp \
-    fetch.cpp \
-    rcon.cpp
+SOURCES += \
+    rcon.cpp \
+    xsmanagerdaemon.cpp \
+    xsmanagerclient.cpp
 
-HEADERS += xssamserver.h\
+HEADERS +=\
         xslibsamserver_global.h \
-    fetch.h \
-    rcon.h
+    rcon.h \
+    xsmanagerdaemon.h \
+    xsmanagerclient.h
 
 unix {
     target.path = /usr/lib

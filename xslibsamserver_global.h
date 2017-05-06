@@ -3,6 +3,9 @@
 
 #include <QtCore/qglobal.h>
 
+#define SAM_PORT 27015
+#define MANAGER_PORT 3030
+
 #if defined(XSLIBSAMSERVER_LIBRARY)
 #  define XSLIBSAMSERVERSHARED_EXPORT Q_DECL_EXPORT
 #else
