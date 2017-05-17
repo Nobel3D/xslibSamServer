@@ -6,10 +6,12 @@
 #include <QThread>
 #include <QDir>
 
+#define STREAM_SYNC 100
+
 class XSLIBSAMSERVERSHARED_EXPORT xsManagerDaemon : public QThread
 {
 public:
-    xsManagerDaemon();
+    xsManagerDaemon(QObject *parent = 0);
     int startServer(const QString &crt, const QString &key);
     int login(QString &hit, int port);
     int createConfiguration(QString passwd, const QString &filepw = QDir::homePath() + "/.xsam");
@@ -17,7 +19,8 @@ public:
 
     QString serverRead();
     int serverWrite(const QString &str);
-    QString format(const QString &str);
+    QString samRead();
+    int samWrite(QString str);
 
     xsServerSsl* server;
     xsPassword* pw;
@@ -25,7 +28,6 @@ public:
 
     int Connect();
     int Login(const QString &passwd);
-
 
     QString strBuffer;
     QString strStatus;
