@@ -2,7 +2,6 @@
 #define XSMANAGERDAEMON_H
 
 #include "xslibsamserver_global.h"
-#include "rcon.h"
 #include <xslib/xslib.h>
 #include <QThread>
 #include <QDir>
@@ -13,14 +12,16 @@ public:
     xsManagerDaemon();
     int startServer(const QString &crt, const QString &key);
     int login(QString &hit, int port);
-    int createConfiguration(QString &passwd, const QString &filepw = QDir::homePath() + "/.xsam");
+    int createConfiguration(QString passwd, const QString &filepw = QDir::homePath() + "/.xsam");
     void run();
 
+    QString serverRead();
+    int serverWrite(const QString &str);
     QString format(const QString &str);
 
     xsServerSsl* server;
     xsPassword* pw;
-    Rcon* sam;
+    xsClient* sam;
 
     int Connect();
     int Login(const QString &passwd);

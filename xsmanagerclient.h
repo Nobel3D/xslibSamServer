@@ -2,7 +2,6 @@
 #define XSMANAGERCLIENT_H
 
 #include "xslibsamserver_global.h"
-#include "rcon.h"
 
 class XSLIBSAMSERVERSHARED_EXPORT xsManagerClient
 {
